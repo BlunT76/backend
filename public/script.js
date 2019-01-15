@@ -1,0 +1,1 @@
+let isLogged = false;

@@ -1,0 +1,41 @@
+<%- include partials/header.ejs %>
+    <%- include partials/nav.ejs %>
+
+        <div class="container-fluid mb-3 mt-2">
+            <div class="row">
+                <% posts.forEach(function(post, index){ %>
+                    <div class="card bg-light col-xs-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 mb-10 mt-5">
+                        <div class="card-body m-2">
+                            <h5 class="card-title text-success">
+                                <%= post.title %>
+                            </h5>
+                            <p class="card-text mt-4">
+                                <%= post.post %>
+                            </p>
+                            <hr>
+                            <span class="italic">
+                            <%= post.author %>
+                        </span>
+                            <span class="italic">
+                            <%= post.date %>
+                        </span>
+                            <a href="delete/<%= post._id %>" class="btn btn-outline-success float-right">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </a>
+                            <a href="/editpage/<%= post._id %>" class="btn btn-outline-success mr-2 float-right">
+                                <i class="fas fa-pencil-alt mr-1"></i> Edit
+                        </a>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+
+            <div class="ml-5">
+                <a href="/" class="btn btn-outline-success mt-5 mb-5">
+                <i class="fas fa-angle-double-left"></i> Back
+            </a>
+            </div>
+
+            <!--show comments (todo)-->
+        </div>
+        <%- include partials/footer.ejs %>

@@ -1,0 +1,1 @@
+module.exports = MongoClient.connect(url,{useNewUrlParser: true });

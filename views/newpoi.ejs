@@ -1,0 +1,40 @@
+<%- include partials/header.ejs %>
+<%- include partials/nav.ejs %> 
+<div class="container">
+    <% if (errors) { %>
+        <div class="alert alert-danger m-3 p-3" role="alert">
+            <% errors.forEach(function(error) { %>
+                <h5><%= error.msg %> </h5>
+            <% }); %>
+        </div>
+    <% } %>
+
+    <% if (success) { %>
+        <div class="alert alert-success m-3 p-3" role="alert">
+            <h5>The update was successful!</h5>
+        </div>
+    <% } %>
+
+    <div class="mt-5">
+        <form action="/addpoi" method="post" novalidate>
+            <div class="form-group">
+                <label for="poi_name">Name</label>
+                <input type="text" name="name" id="poi_name" class="form-control" value="<%= data.name %>">
+                
+            </div>
+            <div class="form-group">
+                <label for="poi_lat">Latitude</label>
+                <input type="number" step="any" name="latitude" id="poi_lat" class="form-control" value="<%= data.latitude %>">
+            </div>
+            <div class="form-group">
+                <label for="poi_lon">Longitude</label>
+                <input type="number" step="any" name="longitude" id="poi_lon" class="form-control" value="<%= data.longitude %>">
+            </div>
+            <button type="submit" class="btn btn-outline-primary float-right"><i class="fas fa-check"></i> Submit</button>
+        </form>
+        <a href="/" class="btn btn-outline-primary mb-5">
+            <i class="fas fa-angle-double-left mr-1"></i> Back
+        </a>
+    </div>
+</div>   
+<%- include partials/footer.ejs %>
