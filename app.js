@@ -85,4 +85,12 @@ app.get('/delete/:id', (req, res) => {
 	res.redirect('/');
 });
 
+// gere le cors
+app.options('/*', (req, res, next) => {
+	res.header('Access-Control-Allow-Origin', 'https://ac845e0d.ngrok.io');
+	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+	res.sendStatus(200);
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
