@@ -32,6 +32,7 @@ app.get('/', async (req, res)=>{
 
 //retourne tous les poi en json
 app.get('/poiall', async (req, res)=>{
+	res.header('Access-Control-Allow-Origin', '*');
 	const poi = await getAllPoi()
 	return res.json(poi);
 })
