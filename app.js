@@ -9,7 +9,7 @@ const getAllPoi = require('./request/getAllPoi')
 const getFilteredPoi = require('./request/getFilteredPoi')
 const deletePoi = require('./request/deletePoi')
 const addPoi = require('./request/addPoi')
-const port = 8080
+const port = process.env.PORT || 8080;
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
