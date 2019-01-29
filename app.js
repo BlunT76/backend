@@ -23,6 +23,12 @@ app.get('/', async (req, res)=>{
 	res.render('index', { poi,success: false	})
 })
 
+//retourne tous les poi en json
+app.get('/poiall', async (req, res)=>{
+	const poi = await getAllPoi()
+	return res.json(poi);
+})
+
 //retourne la liste des poi en json
 // /poi?lat=0.5757474&lng=44.86658&dist=1000
 app.get('/poi', async function (req, res) {
