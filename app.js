@@ -41,7 +41,7 @@ app.get('/poiall', async (req, res) => {
   return res.json(poi);
 });
 
-// retourne la liste des poi en json
+// retourne la liste des poi en json par rapport a une latlng et distancemax donnée
 // /poi?lat=0.5757474&lng=44.86658&dist=1000
 app.get('/poi', async (req, res) => {
   if (req.query.lat && req.query.lng && req.query.dist) {

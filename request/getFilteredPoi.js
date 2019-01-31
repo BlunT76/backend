@@ -1,26 +1,32 @@
-const MongoClient = require('mongodb').MongoClient;
-const env = require('../env.js')
+const { MongoClient } = require('mongodb');
+const env = require('../env.js');
 
-module.exports =  getFilteredPoi = (lat,lng,dist) => {
-  let promise = new Promise(async (resolve, reject)=> {
-    const client = await MongoClient.connect(env.url,{useNewUrlParser: true });
-    client.db(env.dbName).collection("poi").find(
-      {	"loc":
-        {	"$near":
-          { "$geometry":
-            { "type": "Point",
-              "coordinates": [Number(lng), Number(lat)] 
+const getFilteredPoi = (lat, lng, dist) => {
+  const promise = new Promise(async (resolve, reject) => {
+    const client = await MongoClient.connect(env.url, { useNewUrlParser: true });
+    client.db(env.dbName).collection('poi').find(
+      {
+        loc:
+        {
+          $near:
+          {
+            $geometry:
+            {
+              type: 'Point',
+              coordinates: [Number(lng), Number(lat)],
             },
-            "$maxDistance": Number(dist)
+            $maxDistance: Number(dist),
           },
-        }	
-      }
+        },
+      },
     )
-    .toArray((error, results) => {
-      if (error) reject (error);
-      client.close();
-      resolve(results);
-    })
-  })
-  return promise
-}
+      .toArray((error, results) => {
+        if (error) reject(error);
+        client.close();
+        resolve(results);
+      });
+  });
+  return promise;
+};
+
+module.exports = getFilteredPoi;
