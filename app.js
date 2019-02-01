@@ -1,6 +1,8 @@
 const express = require('express');
 const expressSession = require('express-session');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 const path = require('path');
 
 const app = express();
@@ -12,22 +14,34 @@ const getAllPoi = require('./request/getAllPoi');
 const getFilteredPoi = require('./request/getFilteredPoi');
 const deletePoi = require('./request/deletePoi');
 const addPoi = require('./request/addPoi');
+const authAdmin = require('./request/admin-auth');
 
 const port = process.env.PORT || 8080;
+
+// bcrypt.genSalt(10, function(err, salt) {
+//   bcrypt.hash("nouveau mot de passe", salt, function(err, hash) {
+//       console.log(hash)
+//   });
+// });
+const user = {
+  name: 'admin',
+  passwd: '$2b$10$LONL6M9E63/K3l02lkulCuAeEMHmglwOhysdOQmBLyIjWic1imrGa',
+};
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
+app.use(cookieParser());
 app.use(expressSession({ secret: 'max', saveUninitialized: false, resave: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // gere le cors
-app.options('/*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', 'https://ac845e0d.ngrok.io');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-  res.sendStatus(200);
-});
+// app.options('/*', (req, res) => {
+//   res.header('Access-Control-Allow-Origin', 'https://ac845e0d.ngrok.io');
+//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+//   res.sendStatus(200);
+// });
 // page d'accueil: affiche tous les poi
 app.get('/', async (req, res) => {
   const poi = await getAllPoi();
@@ -52,7 +66,7 @@ app.get('/poi', async (req, res) => {
 });
 
 // newpoi page, for adding a new poi
-app.get('/newpoi', (req, res) => {
+app.get('/newpoi', authAdmin, (req, res) => {
   req.session.errors = null;
   res.render('newpoi', {
     errors: req.session.errors,
@@ -93,9 +107,28 @@ app.post('/addpoi/', v.validateMeChecks, async (req, res) => {
 });
 
 // Remove Poi
-app.get('/delete/:id', (req, res) => {
+app.get('/delete/:id', authAdmin, (req, res) => {
   deletePoi(req.params.id);
   res.redirect('/');
+});
+
+app.get('/userlogin', (req, res) => {
+  res.render('login');
+});
+
+app.post('/login', (req, res) => {
+  if (req.body.name === user.name) {
+    bcrypt.compare(req.body.passwd, user.passwd, (err, ressource) => {
+      if (err) res.redirect('userlogin');
+      if (ressource) {
+        req.session.user = user.name;
+        req.session.passwd = user.passwd;
+        res.redirect('/');
+      }
+    });
+  } else {
+    res.redirect('userlogin');
+  }
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
