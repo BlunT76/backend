@@ -35,14 +35,7 @@ app.use(cookieParser());
 app.use(expressSession({ secret: 'max', saveUninitialized: false, resave: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// gere le cors
-// app.options('/*', (req, res) => {
-//   res.header('Access-Control-Allow-Origin', 'https://ac845e0d.ngrok.io');
-//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-//   res.sendStatus(200);
-// });
-// page d'accueil: affiche tous les poi
+// page d'accueil: affiche le dashboard
 app.get('/', async (req, res) => {
   const poi = await getAllPoi();
   res.render('index', { poi, success: false });
