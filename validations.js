@@ -20,4 +20,17 @@ module.exports = {
       .withMessage('The Longitude field is required. Valid longitude values are between -180 and 180, both inclusive.')
       .trim(),
   ],
+  validateLogin: [
+    check('name')
+      .exists()
+      .isLength({ min: 1, max: 50 })
+      .withMessage('The name field is required')
+      .trim(),
+
+    check('passwd')
+      .exists()
+      .isLength({ min: 1, max: 50 })
+      .withMessage('The password field is required')
+      .trim(),
+  ],
 };

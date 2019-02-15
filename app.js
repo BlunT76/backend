@@ -4,10 +4,9 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const path = require('path');
+const { validationResult } = require('express-validator/check');
 
 const app = express();
-
-const { validationResult } = require('express-validator/check');
 
 const v = require('./validations');
 const getAllPoi = require('./request/getAllPoi');
@@ -109,19 +108,31 @@ app.get('/userlogin', (req, res) => {
   res.render('login');
 });
 
-app.post('/login', (req, res) => {
-  if (req.body.name === user.name) {
-    bcrypt.compare(req.body.passwd, user.passwd, (err, ressource) => {
-      if (err) res.redirect('userlogin');
-      if (ressource) {
-        req.session.user = user.name;
-        req.session.passwd = user.passwd;
-        res.redirect('/');
-      }
-    });
+app.post('/login', v.validateLogin, (req, res) => {
+  const errors = validationResult(req);
+  if (errors) console.log(errors);
+  if (errors.isEmpty()) {
+    if (req.body.name === user.name) {
+      console.log('here');
+      bcrypt.compare(req.body.passwd, user.passwd, (err, ressource) => {
+        if (err) res.redirect('userlogin');
+        if (ressource) {
+          req.session.user = user.name;
+          req.session.passwd = user.passwd;
+          res.redirect('/');
+        }
+      });
+    } else {
+      res.redirect('userlogin');
+    }
   } else {
     res.redirect('userlogin');
   }
 });
+
+// server close function for jasmine test
+exports.closeServer = () => {
+  app.close();
+};
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
