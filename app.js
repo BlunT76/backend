@@ -36,10 +36,10 @@ app.use(expressSession({
   secret: 'NoWay!!76',
   saveUninitialized: false,
   resave: false,
-  cookie: { secure: true },
+  // cookie: { secure: true },
 }));
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(helmet());
+app.use(helmet());
 
 // paramètre de sécurité
 
