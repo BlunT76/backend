@@ -39,7 +39,7 @@ app.use(expressSession({
   cookie: { secure: true },
 }));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(helmet());
+// app.use(helmet());
 
 // paramètre de sécurité
 
