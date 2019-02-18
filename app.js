@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const path = require('path');
+const helmet = require('helmet');
 const { validationResult } = require('express-validator/check');
 
 const app = express();
@@ -31,8 +32,17 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(cookieParser());
-app.use(expressSession({ secret: 'max', saveUninitialized: false, resave: false }));
+app.use(expressSession({
+  secret: 'NoWay!!76',
+  saveUninitialized: false,
+  resave: false,
+  cookie: { secure: true },
+}));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(helmet());
+
+// paramètre de sécurité
+
 
 // page d'accueil: affiche le dashboard
 app.get('/', async (req, res) => {
