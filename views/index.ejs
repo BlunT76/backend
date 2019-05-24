@@ -1,29 +1,31 @@
 <%- include partials/header.ejs %>
-    <%- include partials/nav.ejs %>
+  <%- include partials/nav.ejs %>
 
-    <div class="container-fluid mb-5 mt-3">
-        <h1 class="text-center text-primary">Admin Dashboard</h1>
-        <div class="row">
-            <% poi.forEach(function(p, index){ %>
-                <div id="card1" class="card bg-light col-xs-5 col-sm-5 col-md-5 col-lg-5 col-xl-5 mb-1 mt-1">
-                    <div class="card-body m-0">
-                        <div class="postText">
-                        <h5 class="card-title text-primary"><%= p.name %></h5>
-                        </div>
-                        
-                        <span class="text-primary italic m-0">
-                            LatLng:
-                        </span>
-                        <span class="text-primary italic m-0">
-                            <%= p.loc.coordinates[1] %>, <%= p.loc.coordinates[0] %>
-                        </span>                    
-                        <span><a href="/delete/<%= p._id %>" class="btn btn-sm btn-outline-primary float-right">
-                            <i class="fas fa-trash-alt mr-1"></i> Delete
-                        </a></span>
-                    </div> 
-                </div>
-            <% }) %>
+  <div class="container-fluid mb-5 mt-3">
+    <h1 class="text-center text-primary">Admin Dashboard</h1>
+    <div class="row d-flex justify-content-around p-2">
+      <% poi.forEach(function(p, index){ %>
+        <div class="card bg-light col-lg col-lg-5 m-3">
+          <div class="card-body">
+            <div class="">
+              <h2 class="card-title text-primary"><%= p.name %></h2>
+            </div>
+              
+            <span class="text-primary italic m-0">
+                LatLng:
+            </span>
+
+            <span class="text-primary italic m-0">
+                <%= p.loc.coordinates[1] %>, <%= p.loc.coordinates[0] %>
+            </span>    
+
+            <a href="/delete/<%= p._id %>" class="btn btn-sm btn-outline-primary float-right ml-1">
+                <i class="fas fa-trash-alt mr-1"></i> Delete
+            </a>
+          </div> 
         </div>
+      <% }) %>
     </div>
+  </div>
 
 <%- include partials/footer.ejs %>
